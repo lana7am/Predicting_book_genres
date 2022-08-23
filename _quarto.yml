@@ -6,7 +6,7 @@ website:
   title: "Predicting book genres"
   navbar:
     left:
-      - href: README.md
+      - href: index.qmd
         text: Home
       - href: items/webscraping.ipynb
         text: web scraping

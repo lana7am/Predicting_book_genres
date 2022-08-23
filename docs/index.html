@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Predicting_book_genres</title>
+<title>Predicting book genres</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ ul.task-list{list-style: none;}
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Predicting_book_genres</span>
+    <span class="navbar-title">Predicting book genres</span>
   </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -73,7 +73,7 @@ ul.task-list{list-style: none;}
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
+    <a class="nav-link" href="./README.md">Home</a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./items/webscraping.html">web scraping</a>
@@ -98,14 +98,21 @@ ul.task-list{list-style: none;}
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Predicting_book_genres</h1>
+<h1 class="title">Predicting book genres</h1>
 </div>
 
 
@@ -119,10 +126,59 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<p>This is a Quarto website.</p>
-<p>To learn more about Quarto websites visit <a href="https://quarto.org/docs/websites" class="uri">https://quarto.org/docs/websites</a>.</p>
+<p>predicting book genre based on book summary</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>when working with a large amount of books reading every book and trying to figure out what genre it is can be a time consuming task thats why we need to find a way to automate the process of genre labeling.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>the dataset was obtained by webscraping “abjjed” using the beautifulsoup python package</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>attribute</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Book_title</td>
+<td>title of the book</td>
+</tr>
+<tr class="even">
+<td>Author</td>
+<td>author name</td>
+</tr>
+<tr class="odd">
+<td>cover_url</td>
+<td>book cover image url</td>
+</tr>
+<tr class="even">
+<td>genres</td>
+<td>list of genres that a book falls under</td>
+</tr>
+<tr class="odd">
+<td>descriptions</td>
+<td>book description</td>
+</tr>
+<tr class="even">
+<td>cover_name</td>
+<td>string name of the cover image</td>
+</tr>
+<tr class="odd">
+<td>description_length</td>
+<td>the word count of the description</td>
+</tr>
+<tr class="even">
+<td>genre_count</td>
+<td>number of genres that a book has</td>
+</tr>
+</tbody>
+</table>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

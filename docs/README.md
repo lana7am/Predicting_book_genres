@@ -1,7 +1,4 @@
----
-title: "Predicting book genres"
----
-
+# Predicting book genre
 
 predicting book genre based on book summary
 

@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Predicting_book_genres",
+    "title": "Predicting book genres",
     "section": "",
-    "text": "To learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "predicting book genre based on book summary"
   },
   {
     "objectID": "about.html",
@@ -33,5 +33,19 @@
     "title": "Predicting_book_genres",
     "section": "",
     "text": "df = pd.read_csv(\"/Users/Lana/Desktop/Misk_DSI_capstone/abjjad.csv\",encoding=\"utf-8-sig\")\n\ndf.head(4)\n\n\n\n\n\n  \n    \n      \n      Unnamed: 0\n      Book_title\n      Author\n      Cover_url\n      genres\n      descriptions\n      cover_name\n      description_length\n      genre_count\n    \n  \n  \n    \n      0\n      0\n      أحببتك أكثر مما ينبغي\n      أثير عبد الله النشمي\n      https://cdn.abjjad.com/pub/369c6a19-3ed7-4d0f-...\n      ['روايات وقصص', 'روايات رومانسية', 'روايات خيا...\n      تنقل الروايه بصدق عميق يدور اعماق المراه حاله ...\n      369c6a19-3ed7-4d0f-a449-6f8173cf6abd-192X290.png\n      157\n      3\n    \n    \n      1\n      1\n      هكذا خُلقت\n      محمد حسين هيكل\n      https://cdn.abjjad.com/pub/cbb863f2-e58c-4fa5-...\n      ['روايات وقصص', 'روايات اجتماعية', 'روايات واق...\n      روايه واقعيه تركتها يدي المءلف امراه غريبه غام...\n      cbb863f2-e58c-4fa5-80f3-2cba733f258f-192X290.png\n      110\n      3\n    \n    \n      2\n      2\n      قواعد العشق الأربعون\n      إليف  شافاق\n      https://cdn.abjjad.com/pub/44a22888-7eea-4714-...\n      ['كتب الأدب', 'أدب عالمي مترجم', 'روايات وقصص'...\n      بلغت بطله الروايه ايلا الزوجه التعيسه سن الارب...\n      44a22888-7eea-4714-9c54-3dbf463eccdd-192X290.png\n      46\n      8\n    \n    \n      3\n      3\n      الأرواح المتمردة\n      جبران خليل جبران\n      https://cdn.abjjad.com/pub/d95eb7b7-ebfd-47c1-...\n      ['روايات وقصص', 'قصص قصيرة', 'روايات اجتماعية'...\n      الارواح المتمرده كتاب صدر لاول مره مدينه نيويو...\n      d95eb7b7-ebfd-47c1-a1a0-7f709c45bfdc-192X290.png\n      76\n      5\n    \n  \n\n\n\n\n##Converting genres to Features\nmultilabel_binarizer = MultiLabelBinarizer()\nmultilabel_binarizer.fit(df['genres'])\n\ny = multilabel_binarizer.transform(df['genres'])\n\nvect = TfidfVectorizer(max_df=0.8, max_features=4000)\n# transform target variable\n#y = multilabel_binarizer.transform(D_FMT['genres'])\n\n# split dataset \nxtrain, xtest, ytrain, ytest = train_test_split(df['descriptions'], y, test_size=0.2, random_state=9)\n\n# TF-IDF \nxtrain_tfidf = vect.fit_transform(xtrain)\nxtest_tfidf = vect.transform(xtest)\n\n## MODEL\nlr = LogisticRegression()\nclf = OneVsRestClassifier(lr)\n\n# fit model \nclf.fit(xtrain_tfidf, ytrain)\n\n# make predictions for validation set\ny_pred = clf.predict(xtest_tfidf)\nprint(y_pred[5])\n\nprint(multilabel_binarizer.inverse_transform(y_pred)[3])\n\ny_pred_prob = clf.predict_proba(xtest_tfidf)\n\n\nthreshold = 0.15 # threshold value\ny_pred_new = (y_pred_prob >= threshold).astype(int)\n\n# evaluate performance\nprint(f1_score(ytest, y_pred_new, average=\"micro\"))\nprint(accuracy_score(ytest, y_pred_new))"
+  },
+  {
+    "objectID": "index.html#background",
+    "href": "index.html#background",
+    "title": "Predicting book genres",
+    "section": "Background",
+    "text": "Background\nwhen working with a large amount of books reading every book and trying to figure out what genre it is can be a time consuming task thats why we need to find a way to automate the process of genre labeling."
+  },
+  {
+    "objectID": "index.html#data",
+    "href": "index.html#data",
+    "title": "Predicting book genres",
+    "section": "Data",
+    "text": "Data\nthe dataset was obtained by webscraping “abjjed” using the beautifulsoup python package\n\n\n\nattribute\ndescription\n\n\n\n\nBook_title\ntitle of the book\n\n\nAuthor\nauthor name\n\n\ncover_url\nbook cover image url\n\n\ngenres\nlist of genres that a book falls under\n\n\ndescriptions\nbook description\n\n\ncover_name\nstring name of the cover image\n\n\ndescription_length\nthe word count of the description\n\n\ngenre_count\nnumber of genres that a book has"
   }
 ]
