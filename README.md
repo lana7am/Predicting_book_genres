@@ -12,7 +12,6 @@ when working with a large amount of books reading every book and trying to figur
 the dataset was obtained by webscraping "abjjed" using the beautifulsoup python package
 
 
-
 | attribute          | description                            |
 |--------------------|----------------------------------------|
 | Book_title         | title of the book                      |
