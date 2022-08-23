@@ -2,4 +2,73 @@
 title: "About"
 ---
 
-About this site
+# introduction
+
+when working with a large amount of books reading every book and trying to figure out what genre it is can be a time consuming task thats why we need to find a way to automate the process of genre labeling. 
+
+# Can we judge a book buy its summury/plot?
+
+**the problem**: knowing what genres and subgenres a book falls under 
+
+**aim**: to automate and accelerate the process of labeling the genres of books
+
+**goal**: build a high accuracy model that predicted the genre of a given book
+
+**imputes**: to build a precise multilabel genre prediction model to better organize and categorize my home library :P
+
+# Dataset 
+
+i scraped the data from the [abbjad](https://www.abjjad.com/) website 
+
+the dataset has 4160 rows
+
+
+| attribute          | description                            |
+|--------------------|----------------------------------------|
+| Book_title         | title of the book                      |
+| Author             | author name                            |
+| cover_url          | book cover image url                   |
+| genres             | list of genres that a book falls under |
+| descriptions       | book description                       |
+| cover_name         | string name of the cover image         |
+| description_length | the word count of the description      |
+| genre_count        | number of genres that a book has       |
+
+
+# Assumptions
+
+my intial assumptions was that it's easy to build a highly accurate model that can predict the genres of a given book
+
+# The steps you took to find a solution
+
+ after web scraping the data i cleaned the dataset and applied nlp preprocess steps such as : 
+ - removing white spaces,numbers,spiecal characters and diacritics
+ - removing stop words
+ - applying feature extraction method (TF-IDF)
+ 
+ building the model:
+ 
+  while researching for this project i've stumbled upon a lot of similar projects and resources but the majority only allowed a single genre per book and worked with a small set of basic genres. but with this project i wanted to work with a variety of genres and subgenres. thereby classifying my problem as a Multilabel Classification problem.
+  
+  the resources for Multilabel Classification is scarse. but while reading a lot of documentation i stumbled upon the MultiLabelBinarizer package which makes Multilabel Classification easier to apply. i applied th MultiLabelBinarizer() on the genre feature which allowed the values to be vectorized. after that i've found that logistic regression and one-vs-rest works best.
+  
+  resources:
+  - [which features extraction method to choose?](https://sci-hub.se/https://dl.acm.org/doi/10.1145/3372938.3372998)
+  - [How to Solve a Multi Class Classification Problem with Python?](https://www.projectpro.io/article/multi-class-classification-python-example/547)
+  -[video on Multi-Label Text Classification with Scikit-MultiLearn in Python](https://www.youtube.com/watch?v=YyOuDi-zSiI&t=1007s&ab_channel=JCharisTech)
+ 
+ 
+# conclusion
+
+it is possible to predict book genre based on the book plot/summary and we might be able to achieve a higher accuracy if we have a bigger dataset.
+
+# Outlook for future development
+
+for this project i hope to continue building on the model to increase accuracy and to continue developing the computer vision aspect of the project. i would also like to find websites with a larger book achive to webscrape and use.
+
+# Limitations & problems with your solution
+
+computaional power 
+time managment 
+
+

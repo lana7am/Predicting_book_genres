@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Predicting_book_genres - About</title>
+<title>Predicting book genres - About</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ ul.task-list{list-style: none;}
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Predicting_book_genres</span>
+    <span class="navbar-title">Predicting book genres</span>
   </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -98,7 +98,20 @@ ul.task-list{list-style: none;}
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">introduction</a></li>
+  <li><a href="#can-we-judge-a-book-buy-its-summuryplot" id="toc-can-we-judge-a-book-buy-its-summuryplot" class="nav-link" data-scroll-target="#can-we-judge-a-book-buy-its-summuryplot">Can we judge a book buy its summury/plot?</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions">Assumptions</a></li>
+  <li><a href="#the-steps-you-took-to-find-a-solution" id="toc-the-steps-you-took-to-find-a-solution" class="nav-link" data-scroll-target="#the-steps-you-took-to-find-a-solution">The steps you took to find a solution</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">conclusion</a></li>
+  <li><a href="#outlook-for-future-development" id="toc-outlook-for-future-development" class="nav-link" data-scroll-target="#outlook-for-future-development">Outlook for future development</a></li>
+  <li><a href="#limitations-problems-with-your-solution" id="toc-limitations-problems-with-your-solution" class="nav-link" data-scroll-target="#limitations-problems-with-your-solution">Limitations &amp; problems with your solution</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -119,9 +132,90 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<p>About this site</p>
+<section id="introduction" class="level1">
+<h1>introduction</h1>
+<p>when working with a large amount of books reading every book and trying to figure out what genre it is can be a time consuming task thats why we need to find a way to automate the process of genre labeling.</p>
+</section>
+<section id="can-we-judge-a-book-buy-its-summuryplot" class="level1">
+<h1>Can we judge a book buy its summury/plot?</h1>
+<p><strong>the problem</strong>: knowing what genres and subgenres a book falls under</p>
+<p><strong>aim</strong>: to automate and accelerate the process of labeling the genres of books</p>
+<p><strong>goal</strong>: build a high accuracy model that predicted the genre of a given book</p>
+<p><strong>imputes</strong>: to build a precise multilabel genre prediction model to better organize and categorize my home library :P</p>
+</section>
+<section id="dataset" class="level1">
+<h1>Dataset</h1>
+<p>i scraped the data from the <a href="https://www.abjjad.com/">abbjad</a> website</p>
+<p>the dataset has 4160 rows</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>attribute</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Book_title</td>
+<td>title of the book</td>
+</tr>
+<tr class="even">
+<td>Author</td>
+<td>author name</td>
+</tr>
+<tr class="odd">
+<td>cover_url</td>
+<td>book cover image url</td>
+</tr>
+<tr class="even">
+<td>genres</td>
+<td>list of genres that a book falls under</td>
+</tr>
+<tr class="odd">
+<td>descriptions</td>
+<td>book description</td>
+</tr>
+<tr class="even">
+<td>cover_name</td>
+<td>string name of the cover image</td>
+</tr>
+<tr class="odd">
+<td>description_length</td>
+<td>the word count of the description</td>
+</tr>
+<tr class="even">
+<td>genre_count</td>
+<td>number of genres that a book has</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="assumptions" class="level1">
+<h1>Assumptions</h1>
+<p>my intial assumptions was that it’s easy to build a highly accurate model that can predict the genres of a given book</p>
+</section>
+<section id="the-steps-you-took-to-find-a-solution" class="level1">
+<h1>The steps you took to find a solution</h1>
+<p>after web scraping the data i cleaned the dataset and applied nlp preprocess steps such as : - removing white spaces,numbers,spiecal characters and diacritics - removing stop words - applying feature extraction method (TF-IDF)</p>
+<p>building the model:</p>
+<p>while researching for this project i’ve stumbled upon a lot of similar projects and resources but the majority only allowed a single genre per book and worked with a small set of basic genres. but with this project i wanted to work with a variety of genres and subgenres. thereby classifying my problem as a Multilabel Classification problem.</p>
+<p>the resources for Multilabel Classification is scarse. but while reading a lot of documentation i stumbled upon the MultiLabelBinarizer package which makes Multilabel Classification easier to apply. i applied th MultiLabelBinarizer() on the genre feature which allowed the values to be vectorized. after that i’ve found that logistic regression and one-vs-rest works best.</p>
+<p>resources: - <a href="https://sci-hub.se/https://dl.acm.org/doi/10.1145/3372938.3372998">which features extraction method to choose?</a> - <a href="https://www.projectpro.io/article/multi-class-classification-python-example/547">How to Solve a Multi Class Classification Problem with Python?</a> -<a href="https://www.youtube.com/watch?v=YyOuDi-zSiI&amp;t=1007s&amp;ab_channel=JCharisTech">video on Multi-Label Text Classification with Scikit-MultiLearn in Python</a></p>
+</section>
+<section id="conclusion" class="level1">
+<h1>conclusion</h1>
+<p>it is possible to predict book genre based on the book plot/summary and we might be able to achieve a higher accuracy if we have a bigger dataset.</p>
+</section>
+<section id="outlook-for-future-development" class="level1">
+<h1>Outlook for future development</h1>
+<p>for this project i hope to continue building on the model to increase accuracy and to continue developing the computer vision aspect of the project. i would also like to find websites with a larger book achive to webscrape and use.</p>
+</section>
+<section id="limitations-problems-with-your-solution" class="level1">
+<h1>Limitations &amp; problems with your solution</h1>
+<p>computaional power time managment</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
