@@ -41,10 +41,10 @@ my intial assumptions was that it's easy to build a highly accurate model that c
 
 # The steps you took to find a solution
 
- after web scraping the data i cleaned the dataset and applied nlp preprocess steps such as : 
- - removing white spaces,numbers,spiecal characters and diacritics
- - removing stop words
- - applying feature extraction method (TF-IDF)
+ after web scraping the data i cleaned the dataset and applied nlp preprocess steps such as : <br>
+ - removing white spaces,numbers,spiecal characters and diacritics<br>
+ - removing stop words<br>
+ - applying feature extraction method (TF-IDF)<br>
  
  building the model:
  
@@ -52,10 +52,10 @@ my intial assumptions was that it's easy to build a highly accurate model that c
   
   the resources for Multilabel Classification is scarse. but while reading a lot of documentation i stumbled upon the MultiLabelBinarizer package which makes Multilabel Classification easier to apply. i applied th MultiLabelBinarizer() on the genre feature which allowed the values to be vectorized. after that i've found that logistic regression and one-vs-rest works best.
   
-  resources:
-  - [which features extraction method to choose?](https://sci-hub.se/https://dl.acm.org/doi/10.1145/3372938.3372998)
-  - [How to Solve a Multi Class Classification Problem with Python?](https://www.projectpro.io/article/multi-class-classification-python-example/547)
-  -[video on Multi-Label Text Classification with Scikit-MultiLearn in Python](https://www.youtube.com/watch?v=YyOuDi-zSiI&t=1007s&ab_channel=JCharisTech)
+  resources:<br>
+  - [which features extraction method to choose?](https://sci-hub.se/https://dl.acm.org/doi/10.1145/3372938.3372998)<br>
+  - [How to Solve a Multi Class Classification Problem with Python?](https://www.projectpro.io/article/multi-class-classification-python-example/547)<br>
+  -[video on Multi-Label Text Classification with Scikit-MultiLearn in Python](https://www.youtube.com/watch?v=YyOuDi-zSiI&t=1007s&ab_channel=JCharisTech)<br>
  
  
 # conclusion
@@ -68,7 +68,7 @@ for this project i hope to continue building on the model to increase accuracy a
 
 # Limitations & problems with your solution
 
-computaional power 
+computaional power <br>
 time managment 
 
 
