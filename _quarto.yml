@@ -1,0 +1,25 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Predicting_book_genres"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: items/webscraping.ipynb
+        text: web scraping
+      - href: items/data_cleaning.ipynb
+        text: Data cleaning and preprocessing
+      - href: items/Model.ipynb
+        text : Book summury
+      - about.qmd
+
+format:
+  html:
+    theme: Flatly
+    css: styles.css
+    toc: true
+
+

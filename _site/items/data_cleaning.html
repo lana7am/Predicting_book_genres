@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.646">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Predicting_book_genres – data_cleaning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Predicting_book_genres</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../items/webscraping.html">web scraping</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../items/data_cleaning.html" aria-current="page">Data cleaning and preprocessing</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../items/Model.html">Book summury</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.probability <span class="im">import</span> FreqDist</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objs <span class="im">as</span> go</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.offline <span class="im">as</span> pyoff</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarabic.araby <span class="im">as</span> araby</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bidi.algorithm <span class="im">import</span> get_display</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arabic_reshaper</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>first i read the file and removed the new lines from the genre colum at the same step then i cleaned the datab by:<br>
+- Removing empty string in genre - Removing duplicates in the genre list - Removing white spaces from the author’s name</p>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#read the file and removing the /n and |</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"/Users/Lana/Desktop/Misk_DSI_capstone/data/data/abjjad.csv"</span>,converters<span class="op">=</span>{<span class="st">'genres'</span>: <span class="kw">lambda</span> x: re.split(<span class="st">'\||</span><span class="ch">\n</span><span class="st">'</span>, x[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>])})</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'descriptions'</span>].replace(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>,<span class="st">''</span>, regex<span class="op">=</span><span class="va">True</span>).replace(<span class="st">'</span><span class="ch">\r</span><span class="st">'</span>,<span class="st">''</span>).replace(<span class="st">"  "</span>,<span class="st">""</span>).replace(<span class="st">"»"</span>,<span class="st">""</span>).replace(<span class="st">"«"</span>,<span class="st">""</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Book_title'</span>].replace(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>,<span class="st">''</span>, regex<span class="op">=</span><span class="va">True</span>).replace(<span class="st">'</span><span class="ch">\r</span><span class="st">'</span>,<span class="st">''</span>).replace(<span class="st">"  "</span>,<span class="st">""</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">##removing empty string </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'genres'</span>] <span class="op">=</span> df[<span class="st">'genres'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: [s <span class="cf">for</span> s <span class="kw">in</span> x <span class="cf">if</span> s])</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">##removing duplicates in the genre list</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'genres'</span>] <span class="op">=</span> df[<span class="st">'genres'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="bu">list</span>(<span class="bu">dict</span>.fromkeys(x)))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#removing white spaces from the author's name</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Author'</span>] <span class="op">=</span> df[<span class="st">'Author'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x :x.strip())</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#getting cove name from cover_url</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'cover_name'</span>] <span class="op">=</span> df[<span class="st">'Cover_url'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x : x.split(<span class="st">"pub/"</span>,<span class="dv">1</span>)[<span class="dv">1</span>])</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>data cleaning on the description colum/feature</p>
+<ul>
+<li>Remove punctuations</li>
+<li>Remove extra whitespace</li>
+<li>Remove diacritics</li>
+<li>Remove arabic numbers</li>
+<li>Remove english numbers</li>
+<li>Remove stop words</li>
+</ul>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Remove punctuations</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'descriptions'</span>] <span class="op">=</span> df[<span class="st">'descriptions'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: re.sub(<span class="st">'[</span><span class="sc">%s</span><span class="st">]'</span> <span class="op">%</span> re.escape(<span class="st">"""!"#$%&amp;'()*+,«»،-./:;&lt;=&gt;؟?@[\]^_`{|}~"""</span>), <span class="st">' '</span>, x) )</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">## remove extra whitespace</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'descriptions'</span>] <span class="op">=</span> df[<span class="st">'descriptions'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: re.sub(<span class="st">'\s+'</span>, <span class="st">' '</span>, x))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalizeArabic(text):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> text.strip()</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="st">"[إأٱآا]"</span>, <span class="st">"ا"</span>, text)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="st">"ى"</span>, <span class="st">"ي"</span>, text)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="st">"ؤ"</span>, <span class="st">"ء"</span>, text)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="st">"ئ"</span>, <span class="st">"ء"</span>, text)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="st">"ة"</span>, <span class="st">"ه"</span>, text)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    noise <span class="op">=</span> re.<span class="bu">compile</span>(<span class="st">""" ّ    | # Tashdid</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="st">                             َ    | # Fatha</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="st">                             ً    | # Tanwin Fath</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="st">                             ُ    | # Damma</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="st">                             ٌ    | # Tanwin Damm</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="st">                             ِ    | # Kasra</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="st">                             ٍ    | # Tanwin Kasr</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="st">                             ْ    | # Sukun</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="st">                             ـ     # Tatwil/Kashida</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="st">                         """</span>, re.VERBOSE)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(noise, <span class="st">''</span>, text)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'(.)\1+'</span>, <span class="vs">r"\1\1"</span>, text) <span class="co"># Remove longation</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> araby.strip_tashkeel(text)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">##remove_diacritics </span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'descriptions'</span>] <span class="op">=</span> df[<span class="st">'descriptions'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: normalizeArabic(<span class="bu">str</span>(x)))</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">##remove arabic numbers</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>Arabic_numbers <span class="op">=</span> [<span class="st">'٤'</span>,<span class="st">'١'</span>,<span class="st">'٢'</span>,<span class="st">'٣'</span>,<span class="st">'٥'</span>,<span class="st">'٦'</span>,<span class="st">'٧'</span>,<span class="st">'٨'</span>,<span class="st">'٩'</span>,<span class="st">'٠'</span>]</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(Arabic_numbers)):</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'descriptions'</span>] <span class="op">=</span> df[<span class="st">'descriptions'</span>].replace(Arabic_numbers[word], <span class="st">''</span>) </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co">##remove english numbers</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'descriptions'</span>] <span class="op">=</span> df[<span class="st">'descriptions'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: re.sub(<span class="vs">r'[0-9a-zA-Z]+'</span>,<span class="st">' '</span>, x))</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co">#def to remove stop words</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> remove_stopwords(text):</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    arb_stopwords <span class="op">=</span> <span class="bu">set</span>(nltk.corpus.stopwords.words(<span class="st">"arabic"</span>))</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> arb_stopwords:</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        normalizeArabic(word)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    no_stopword_text <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> text.split() <span class="cf">if</span> <span class="kw">not</span> w <span class="kw">in</span> arb_stopwords]</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">' '</span>.join(no_stopword_text)</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co">##stemming?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>checking for null values</p>
+<div class="cell" data-execution_count="73">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>()) <span class="co"># &lt;-- after check i had 1 null in Book_title and 5 in descriptions</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna(axis<span class="op">=</span><span class="dv">0</span>, subset<span class="op">=</span>[<span class="st">'descriptions'</span> , <span class="st">'Book_title'</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Book_title      1
+Author          0
+Cover_url       0
+genres          0
+descriptions    0
+cover_name      0
+dtype: int64</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="73">
+<pre><code>(4160, 6)</code></pre>
+</div>
+</div>
+<p>first i wanted to see how many unique genres and subgenres i have and what they are</p>
+<div class="cell" data-execution_count="74">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">##count all the genres</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>all_genres <span class="op">=</span> []</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> df[<span class="st">'genres'</span>]:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(row)):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        all_genres.append(row[j])</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#remove duplicets</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>all_genres_types <span class="op">=</span> <span class="bu">list</span>(<span class="bu">dict</span>.fromkeys(all_genres))     </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(all_genres_types)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(all_genres_types))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['روايات وقصص', 'روايات رومانسية', 'روايات خيالية', 'روايات اجتماعية', 'روايات واقعية', 'كتب الأدب', 'أدب عالمي مترجم', 'روايات تاريخية', 'روايات فلسفية', 'روايات مترجمة', 'روايات دينية', 'روايات روحانية', 'قصص قصيرة', 'روايات مغامرات', 'روايات رعب', 'روايات فانتازيا', 'روايات نفسية', 'روايات غموض', 'روايات سياسية', 'روايات وطنية', 'روايات الحرب', 'روايات بوليسية', 'روايات خيال علمي', 'روايات ديستوبيا', 'روايات أدب السجون', 'روايات وقصص ساخرة', 'أدب ساخر', 'روايات', 'روايات لليافعين', 'كتب تاريخية', 'التاريخ العربي والإسلامي', 'كتب دينية', 'كتب إسلامية', 'فلسفة وتاريخ أديان', 'الحضارات القديمة', 'دواوين شعر', 'ميثولوجيا وأساطير', 'أساطير', 'دراسات تاريخية', 'تاريخ مصر', 'تاريخ أوروبا', 'نقد أدبي', 'دراسات ومقالات أدبية', 'أمثال ونوادر', 'لغات', 'اللغة العربية', 'دراسات لغوية', 'مسرحيات', 'كتب عن المسيحية', 'الخليج العربي', 'الرياضة والتسلية', 'تسلية وترفيه', 'الشرق الأوسط', 'الصحافة والإعلام', 'الصحافة', 'علم النفس وتطوير الذات', 'علم النفس', 'مقارنات أديان', 'نصوص إبداعية', 'كتب عن اليهودية', 'قانون', 'القضاء', 'رياضات بدنية', 'الترجمة', 'السفر والترحال', 'أدب الرحلات', 'تنمية بشرية وتطوير الذات', 'العادات والتقاليد', 'نثر', 'كتب سياسية', 'فكر سياسي', 'الدين والسياسة', 'مقالات سياسية', 'سياسة عربية', 'المنظمات والأحزاب', 'سياسة دولية', 'كتب قانونية', 'الصراع العربي الإسرائيلي', 'الإعلام', 'الاستشراق', 'تكنولوجيا وإنترنت', 'تكنولوجيا', 'كتب علمية', 'البيئة والطبيعة', 'العلوم', 'علم الاجتماع', 'كمبيوتر وإنترنت', 'الحيوانات', 'السيرة الذاتية والمذكرات', 'كتّاب وأدباء', 'مال وأعمال', 'إدارة الأعمال', 'التسويق', 'ريادة الأعمال', 'الاستثمار', 'الاقتصاد', 'المصارف والبنوك', 'تفسير الأحلام', 'فلاسفة ومفكرون', 'رجال دين', 'ناشطون اجتماعيون', 'فنانون', 'سياسيون', 'روّاد الأعمال', 'رياضيون', 'صحفيون', 'فلسفة', 'فكر فلسفي', 'مقالات فلسفية', 'تاريخ الفلسفة', 'ما وراء الطبيعة', 'المنطق', 'اللسانيات', 'فنون', 'مسرح', 'دراسات فنية', 'مراجع وأبحاث', 'موسوعات', 'لغات أجنبية', 'معاجم', 'أبحاث ودراسات', 'كتب أطفال', 'قصص أطفال', 'كتب تعليمية', 'موسيقى', 'الأسرة والطفل', 'ثقافة جنسية', 'العلاقة الزوجية', 'تنظيم وإدارة المنزل', 'المرأة', 'تربية الطفل', 'الطبخ', 'تصوير', 'عمارة وتصميم', 'فن إسلامي', 'تاريخ الفن', 'سينما', 'الطب والصحة', 'كتب طبية', 'الصحة البدنية', 'الأمراض والأوبئة']
+141</code></pre>
+</div>
+</div>
+<p>first lets explore the top 20 genres whe have in our dataset</p>
+<p>EDA</p>
+<div class="cell" data-execution_count="75">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>arabic_genre <span class="op">=</span> []</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> all_genres:</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    arabic_genre.append(get_display(arabic_reshaper.reshape(item)))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">##plot genre dist</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>arabic_genre <span class="op">=</span> nltk.FreqDist(arabic_genre) </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>all_genres_df <span class="op">=</span> pd.DataFrame({<span class="st">'Genre'</span>: <span class="bu">list</span>(arabic_genre.keys()), </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                              <span class="st">'Count'</span>: <span class="bu">list</span>(arabic_genre.values())})</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> all_genres_df.nlargest(columns<span class="op">=</span><span class="st">"Count"</span>, n <span class="op">=</span> <span class="dv">20</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#plt.xlabel(arabic_reshaper.reshape(')), fontsize=18)</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">15</span>)) </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.barplot(data<span class="op">=</span>g, x<span class="op">=</span> <span class="st">"Count"</span>, y <span class="op">=</span> <span class="st">"Genre"</span>, palette <span class="op">=</span> <span class="st">'GnBu_d'</span>,edgecolor <span class="op">=</span> <span class="st">'w'</span>) </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(ylabel <span class="op">=</span> <span class="st">'النوع'</span>) </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>plt.show()     </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>all_genres <span class="op">=</span> <span class="bu">list</span>(<span class="bu">dict</span>.fromkeys(all_genres))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="data_cleaning_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="76">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'descriptions'</span>].head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="76">
+<pre><code>0    تنقل الروايه بصدق عميق ما يدور في اعماق المراه...
+1    روايه واقعيه تركتها بين يدي المءلف امراه غريبه...
+2    بلغت بطله الروايه ايلا الزوجه التعيسه سن الارب...
+3    الارواح المتمرده هو كتاب صدر لاول مره في مدينه...
+4    الخيمياءي روايه جعلت كاتبها من اشهر الكتاب الع...
+5    في قلب حاره اليهود في الجنوب التونسي تتشابك ال...
+6    يروي جبران خليل جبران في هذا الكتاب قصه حب روح...
+7    سالتك يوم ذاك ان كنت مسترجله اذكر كيف رفعت راس...
+8    بعد خمس سنوات من العزله الاختياريه يستانف د يح...
+9    تاخذنا روايه هيبتا الي ذلك العالم الذي اهلكه ا...
+Name: descriptions, dtype: object</code></pre>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#show </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> freq_words(x, terms <span class="op">=</span> <span class="dv">30</span>): </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  all_words <span class="op">=</span> <span class="st">' '</span>.join([text <span class="cf">for</span> text <span class="kw">in</span> x]) </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  all_words <span class="op">=</span> all_words.split() </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  fdist <span class="op">=</span> nltk.FreqDist(all_words) </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  words_df <span class="op">=</span> pd.DataFrame({<span class="st">'word'</span>:<span class="bu">list</span>(fdist.keys()), <span class="st">'count'</span>:<span class="bu">list</span>(fdist.values())}) </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># selecting top 20 most frequent words </span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  d <span class="op">=</span> words_df.nlargest(columns<span class="op">=</span><span class="st">"count"</span>, n <span class="op">=</span> terms) </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># visualize words and frequencies</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">15</span>)) </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  ax <span class="op">=</span> sns.barplot(data<span class="op">=</span>d, x<span class="op">=</span> <span class="st">"count"</span>, y <span class="op">=</span> <span class="st">"word"</span>,palette <span class="op">=</span> <span class="st">'GnBu_d'</span>) </span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  ax.<span class="bu">set</span>(ylabel <span class="op">=</span> <span class="st">'Word'</span>) </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="78">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>freq_words(df[<span class="st">'descriptions'</span>], <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="data_cleaning_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="79">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'descriptions'</span>] <span class="op">=</span> df[<span class="st">'descriptions'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: remove_stopwords(x))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>freq_words(df[<span class="st">'descriptions'</span>], <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="data_cleaning_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>save the clean data set</p>
+<p>invastagting the length of the our descriptions</p>
+<div class="cell" data-execution_count="80">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'description_length'</span>] <span class="op">=</span> [<span class="bu">len</span>(i.split()) <span class="cf">for</span> i <span class="kw">in</span> df.descriptions]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="80">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Book_title</th>
+      <th>Author</th>
+      <th>Cover_url</th>
+      <th>genres</th>
+      <th>descriptions</th>
+      <th>cover_name</th>
+      <th>description_length</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>أحببتك أكثر مما ينبغي</td>
+      <td>أثير عبد الله النشمي</td>
+      <td>https://cdn.abjjad.com/pub/369c6a19-3ed7-4d0f-...</td>
+      <td>[روايات وقصص, روايات رومانسية, روايات خيالية]</td>
+      <td>تنقل الروايه بصدق عميق يدور اعماق المراه حاله ...</td>
+      <td>369c6a19-3ed7-4d0f-a449-6f8173cf6abd-192X290.png</td>
+      <td>157</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>هكذا خُلقت</td>
+      <td>محمد حسين هيكل</td>
+      <td>https://cdn.abjjad.com/pub/cbb863f2-e58c-4fa5-...</td>
+      <td>[روايات وقصص, روايات اجتماعية, روايات واقعية]</td>
+      <td>روايه واقعيه تركتها يدي المءلف امراه غريبه غام...</td>
+      <td>cbb863f2-e58c-4fa5-80f3-2cba733f258f-192X290.png</td>
+      <td>110</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>قواعد العشق الأربعون</td>
+      <td>إليف  شافاق</td>
+      <td>https://cdn.abjjad.com/pub/44a22888-7eea-4714-...</td>
+      <td>[كتب الأدب, أدب عالمي مترجم, روايات وقصص, رواي...</td>
+      <td>بلغت بطله الروايه ايلا الزوجه التعيسه سن الارب...</td>
+      <td>44a22888-7eea-4714-9c54-3dbf463eccdd-192X290.png</td>
+      <td>46</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="81">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plot_data <span class="op">=</span> [</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    go.Histogram(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>df[<span class="st">'description_length'</span>]</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>plot_layout <span class="op">=</span> go.Layout(</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">'Distribution of description length'</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>        yaxis<span class="op">=</span> {<span class="st">'title'</span>: <span class="st">"Length"</span>},</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        xaxis<span class="op">=</span> {<span class="st">'title'</span>: <span class="st">"Descriptions"</span>}</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> go.Figure(data<span class="op">=</span>plot_data, layout<span class="op">=</span>plot_layout)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>pyoff.iplot(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="82">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> genre_count(x):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(x)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'genre_count'</span>] <span class="op">=</span> df[<span class="st">'genres'</span>].<span class="bu">map</span>(<span class="kw">lambda</span> x: genre_count(x))</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#test['genre_count'] = test['genres'].map(lambda x: genre_count(x))</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="82">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Book_title</th>
+      <th>Author</th>
+      <th>Cover_url</th>
+      <th>genres</th>
+      <th>descriptions</th>
+      <th>cover_name</th>
+      <th>description_length</th>
+      <th>genre_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>أحببتك أكثر مما ينبغي</td>
+      <td>أثير عبد الله النشمي</td>
+      <td>https://cdn.abjjad.com/pub/369c6a19-3ed7-4d0f-...</td>
+      <td>[روايات وقصص, روايات رومانسية, روايات خيالية]</td>
+      <td>تنقل الروايه بصدق عميق يدور اعماق المراه حاله ...</td>
+      <td>369c6a19-3ed7-4d0f-a449-6f8173cf6abd-192X290.png</td>
+      <td>157</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>هكذا خُلقت</td>
+      <td>محمد حسين هيكل</td>
+      <td>https://cdn.abjjad.com/pub/cbb863f2-e58c-4fa5-...</td>
+      <td>[روايات وقصص, روايات اجتماعية, روايات واقعية]</td>
+      <td>روايه واقعيه تركتها يدي المءلف امراه غريبه غام...</td>
+      <td>cbb863f2-e58c-4fa5-80f3-2cba733f258f-192X290.png</td>
+      <td>110</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>قواعد العشق الأربعون</td>
+      <td>إليف  شافاق</td>
+      <td>https://cdn.abjjad.com/pub/44a22888-7eea-4714-...</td>
+      <td>[كتب الأدب, أدب عالمي مترجم, روايات وقصص, رواي...</td>
+      <td>بلغت بطله الروايه ايلا الزوجه التعيسه سن الارب...</td>
+      <td>44a22888-7eea-4714-9c54-3dbf463eccdd-192X290.png</td>
+      <td>46</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>الأرواح المتمردة</td>
+      <td>جبران خليل جبران</td>
+      <td>https://cdn.abjjad.com/pub/d95eb7b7-ebfd-47c1-...</td>
+      <td>[روايات وقصص, قصص قصيرة, روايات اجتماعية, رواي...</td>
+      <td>الارواح المتمرده كتاب صدر لاول مره مدينه نيويو...</td>
+      <td>d95eb7b7-ebfd-47c1-a1a0-7f709c45bfdc-192X290.png</td>
+      <td>76</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>الخيميائي</td>
+      <td>باولو كويلو</td>
+      <td>https://cdn.abjjad.com/pub/40cee10c-4748-4815-...</td>
+      <td>[كتب الأدب, أدب عالمي مترجم, روايات وقصص, رواي...</td>
+      <td>الخيمياءي روايه جعلت كاتبها اشهر الكتاب العالم...</td>
+      <td>40cee10c-4748-4815-8645-a896c6b5dd3f-192X290.png</td>
+      <td>127</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="83">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>plot_data <span class="op">=</span> [</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    go.Histogram(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>df[<span class="st">'genre_count'</span>]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>plot_layout <span class="op">=</span> go.Layout(</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">'Genre distribution'</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        yaxis<span class="op">=</span> {<span class="st">'title'</span>: <span class="st">"Frequency"</span>},</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        xaxis<span class="op">=</span> {<span class="st">'title'</span>: <span class="st">"Number of Genres"</span>}</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> go.Figure(data<span class="op">=</span>plot_data, layout<span class="op">=</span>plot_layout)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>pyoff.iplot(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="vs">r"/Users/Lana/Desktop/Misk_DSI_capstone/abjjad.csv"</span>,encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
