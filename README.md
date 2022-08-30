@@ -9,7 +9,7 @@ when working with a large amount of books reading every book and trying to figur
 
 ## Data
 
-the dataset was obtained by webscraping "abjjed" using the beautifulsoup python package
+the dataset was obtained by webscraping "abjjad" using the beautifulsoup python package
 
 
 | attribute          | description                            |
